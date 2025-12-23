@@ -25,3 +25,7 @@ python -m pytest tests/test_client.py
   - `_internal/` - Internal implementation details
     - `transport/subprocess_cli.py` - CLI subprocess management
     - `message_parser.py` - Message parsing logic
+
+# Local Claude
+
+@CLAUDE.md

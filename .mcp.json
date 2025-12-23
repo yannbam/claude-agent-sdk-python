@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "project_memory": {
+      "command": "node",
+      "args": ["/home/jan/projects/memory-mcp/dist/index.js", "--tree-view", "-m", "./.memory/project"],
+      "env": {}
+    },
+      "scratchpad_memory": {
+      "command": "node",
+      "args": ["/home/jan/projects/memory-mcp/dist/index.js", "--tree-view", "-m", "./.memory/scratchpad"],
+      "env": {}
+    }
+  }
+}
