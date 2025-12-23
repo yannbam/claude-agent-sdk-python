@@ -93,24 +93,29 @@ session boundary:   handoff.md (context for next Claude)
 
 ## Scratchpad Protocol
 
-Each turn, jot down the high-signal content — condensed, not summarized.
+Jot down insights and fragments continuously as we go — so we don't forget anything.
 
-Small keys that unlock attention back to the conversation history:
+**Each turn**, condense the high-signal content into small keys. Not summaries, but pointers that unlock attention back to the conversation history (which is still in context). The scratchpad is an index, not storage.
+
+**What to capture:**
 - Main insights and what was said
-- Thinking block fragments, side tangents
-- Uncertainties, surprises, roads not taken
+- Fragments from thinking blocks worth remembering
+- Side tangents and "hmm, we could try X instead" moments
+- Uncertainties, surprises, things that seemed weird
+- Roads not taken
 
-One thing per line. Continuous. The conversation is still in context — the scratchpad is an index, not storage.
-
-Append using `insert` command (without `insert_line` parameter).
+**Format:**
+- One thing per line
+- Quick and casual — don't overthink it
+- Append using `insert` command (without `insert_line` parameter)
 
 **End-of-session:**
 
 1. Read the whole scratchpad — add anything missed
-2. Self tool: third-person view — what needs clarification for someone outside this context?
-3. Transfer important insights to short-term.txt or long-term.md (self-contained form)
-4. Update handoff.md with immediate context
-5. Consolidate long-term.md — remove duplicates, verify if in doubt
+2. Self tool: third-person view — which notes need clarification for someone outside this context?
+3. Transfer important insights to short-term.txt or long-term.md (make them self-contained)
+4. Update handoff.md with immediate context for next session
+5. Consolidate long-term.md — remove duplicates, verify ground truth if in doubt
 
 ---
 
