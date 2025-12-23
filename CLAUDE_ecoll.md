@@ -1,0 +1,1 @@
+/home/claude/CLAUDE_ecoll.md

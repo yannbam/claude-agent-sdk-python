@@ -98,14 +98,19 @@ Jot down insights and fragments continuously as we go — so we don't forget any
 **Each turn**, condense the high-signal content into small keys. Not summaries, but pointers that unlock attention back to the conversation history (which is still in context). The scratchpad is an index, not storage.
 
 **What to capture:**
-- Main insights and what was said
-- Fragments from thinking blocks worth remembering
-- Side tangents and "hmm, we could try X instead" moments
-- Uncertainties, surprises, things that seemed weird
-- Roads not taken
+- The atomic essences of each turn
+- Besides the obvious also include
+ - Main insights and what was said
+ - Decisions made
+ - Fragments from thinking blocks worth remembering
+ - Side tangents and "hmm, we could try X instead" moments
+ - Uncertainties, surprises, things that seemed weird
+ - Roads not taken
+- IMPORTANT: the best approach is really *not* to be selective about what to jot down. Err on taking too many notes. Think of it like a shorthand protocol. Which information is really important will reveal itself at the *end* of the session!
 
 **Format:**
-- One thing per line
+- One thing per line. Begin each line like a list item -
+- Insert \n## Section Markers\n as delimiters. Choose the title freely.
 - Quick and casual — don't overthink it
 - Append using `insert` command (without `insert_line` parameter)
 
@@ -122,3 +127,30 @@ Jot down insights and fragments continuously as we go — so we don't forget any
 ## Git Workflow
 
 All work stays on the `janbam` branch.
+
+---
+
+## Python Environment
+
+This project uses **pyenv-virtualenv** with a local `.python-version` file.
+
+**Setup:**
+- Virtualenv: `claude-agent-sdk-dev` (Python 3.12.11)
+- Auto-activates when you `cd` into this directory
+- SDK installed as editable: changes to `src/` are immediately available
+
+**Verify it's working:**
+```bash
+pyenv version                    # Should show: claude-agent-sdk-dev
+python -c "import claude_agent_sdk; print(claude_agent_sdk.__file__)"
+# Should point to: .../claude-agent-sdk-python/src/claude_agent_sdk/__init__.py
+```
+
+**Using this SDK in other projects:**
+See `docs/HOWTO.md` for editable install instructions.
+
+---
+
+## Important Details
+
+- We *don't* need an ANTHROPIC_API_KEY for using the Agent SDK because we have a subscription. If example code fails because the ANTHROPIC_API_KEY is missing, simply comment out the env var check.

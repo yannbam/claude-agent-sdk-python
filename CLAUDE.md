@@ -28,7 +28,7 @@ python -m pytest tests/test_client.py
 
 # e/coll
 
-@/home/claude/CLAUDE_ecoll.md
+@CLAUDE_ecoll.md
 
 # Local Claude.md - This content is highly relevant to your task
 
