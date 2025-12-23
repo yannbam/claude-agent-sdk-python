@@ -26,6 +26,10 @@ python -m pytest tests/test_client.py
     - `transport/subprocess_cli.py` - CLI subprocess management
     - `message_parser.py` - Message parsing logic
 
-# Local Claude
+# e/coll
 
-@CLAUDE.md
+@/home/claude/CLAUDE_ecoll.md
+
+# Local Claude.md - This content is highly relevant to your task
+
+@CLAUDE_LOCAL.md
