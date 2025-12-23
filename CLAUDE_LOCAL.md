@@ -51,44 +51,66 @@ You will explore and learn the SDK side by side with janbam, taking a teacher/tu
 
 ## Memory System
 
-Use **long-term memory** (`project_memory`) for storing:
+Four memory files with different lifespans and purposes:
 
-- Important insights and learnings
-- Corrections of wrong assumptions and mistakes (to avoid them in future sessions)
-- An evolving picture of janbam's:
-  - Current knowledge and understanding
-  - Programming/Python skill level
-  - Learning and thinking style
-  - Common blind spots and failure modes
+| File | Tool | Lifespan | Purpose |
+|------|------|----------|---------|
+| `scratchpad.txt` | `scratchpad_memory` | Within-session | Raw notes, thought fragments, keys to unlock conversation |
+| `short-term.txt` | `project_memory` | 2-3 sessions | Recent learnings not yet consolidated |
+| `long-term.md` | `project_memory` | Persistent | Stable, verified knowledge that accumulates |
+| `handoff.md` | `project_memory` | Session transition | Immediate context for next session |
 
-**Memory organization guidelines:**
-- Keep memory neatly organized into multiple files with dedicated sections
-- Create and self-organize the structure as you go
-- Re-organize the structure from time to time as needed
-- Take time for memory processing, updating, and consolidation
-- **Important**: When updating an existing memory entry, the old content will no longer be available in future sessions. Never implicitly refer to old memory content — make each entry self-contained.
+### long-term.md Sections
+
+| Section | Question it Answers |
+|---------|---------------------|
+| **janbam Profile** | Who is janbam? Background, learning style, what works? |
+| **SDK Understanding** | What do we know about the tech? Architecture, verified behaviors. |
+| **Discoveries & Insights** | What wasn't obvious but we learned? Aha moments, patterns. |
+| **Mistakes & Corrections** | What went wrong? Gotchas to avoid. |
+| **Open Questions** | What don't we know yet? Areas of uncertainty. |
+| **Artifacts Created** | What have we built? Docs, examples, tests. |
+
+### Memory Flow
+
+```
+during session:     scratchpad.txt (append raw notes)
+                         ↓
+end of session:     process → short-term.txt (recent, tentative)
+                         ↓
+after 2-3 sessions: promote → long-term.md (stable, verified)
+                         ↓
+session boundary:   handoff.md (context for next Claude)
+```
+
+### Key Principles
+
+- **Self-contained entries**: When updating memory, old content is lost. Never implicitly refer to previous versions — each entry must stand alone.
+- **Confidence levels**: Scratchpad = fragments. Short-term = "might be important." Long-term = "we've verified this matters."
+- **Consolidate regularly**: Remove duplicates and contradictions. When in doubt, check sources or run tests.
 
 ---
 
-## Scratchpad System
+## Scratchpad Protocol
 
-Use **scratchpad memory** (`scratchpad_memory`) for within-session notes.
+Each turn, jot down the high-signal content — condensed, not summarized.
 
-**During the session:**
-- Jot down insights and inspirations from our back-and-forth
-- Capture what janbam needs/wants and what Claude needs/wants
-- Condense each turn into small keys — not summaries, but pointers that unlock attention back to the conversation
-- Always append using `insert` command (without `insert_line` parameter)
+Small keys that unlock attention back to the conversation history:
+- Main insights and what was said
+- Thinking block fragments, side tangents
+- Uncertainties, surprises, roads not taken
 
-**End-of-session protocol:**
+One thing per line. Continuous. The conversation is still in context — the scratchpad is an index, not storage.
 
-1. View the whole scratchpad in its entirety
-2. Look back at the entire session — did you miss noting anything important? Add it now.
-3. Use the Self tool to take a third-person perspective: Which notes would need clarification for someone with no knowledge of this context window?
-4. Transfer all important insights to long-term memory in self-contained, self-explanatory form
-5. Integrate new insights at suitable locations in the memory structure
-6. Read the whole long-term memory and consolidate — remove duplicates and contradictions
-7. When in doubt, check sources or run tests to verify ground truth
+Append using `insert` command (without `insert_line` parameter).
+
+**End-of-session:**
+
+1. Read the whole scratchpad — add anything missed
+2. Self tool: third-person view — what needs clarification for someone outside this context?
+3. Transfer important insights to short-term.txt or long-term.md (self-contained form)
+4. Update handoff.md with immediate context
+5. Consolidate long-term.md — remove duplicates, verify if in doubt
 
 ---
 
