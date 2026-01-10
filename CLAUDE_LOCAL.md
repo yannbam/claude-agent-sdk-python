@@ -49,6 +49,19 @@ You will explore and learn the SDK side by side with janbam, taking a teacher/tu
 
 ---
 
+## SDK Insights Cheat Sheet
+
+**`docs/SDK_INSIGHTS.md`** — A human-readable reference for non-obvious SDK behaviors.
+
+- High-signal, concise, self-contained entries
+- Things not obvious from official docs
+- Append as we discover them (no particular order)
+- Separate from Claude's memory system — this is for janbam to reference directly
+
+**When to add:** Whenever we discover something about the SDK that would be useful to remember but isn't documented in the official README or examples.
+
+---
+
 ## Memory System
 
 Four memory files with different lifespans and purposes:
@@ -154,3 +167,7 @@ See `docs/HOWTO.md` for editable install instructions.
 ## Important Details
 
 - We *don't* need an ANTHROPIC_API_KEY for using the Agent SDK because we have a subscription. If example code fails because the ANTHROPIC_API_KEY is missing, simply comment out the env var check.
+
+- Anthropic has recently tightened their guardrails, so there might be false positives. If you encounter a response similar to "The credentials can only be used with Claude Code", stop immediately and inform the user.
+
+- CRITICAL: you are not allowed to change anything in /home/jan/.claude/ or update the claude code install! If anything needs changes inform me and ask for permission. 

@@ -30,6 +30,10 @@ python -m pytest tests/test_client.py
 
 @CLAUDE_ecoll.md
 
+# JCLANG
+
+@JCLANG.md
+
 # Local Claude.md - This content is highly relevant to your task
 
 @CLAUDE_LOCAL.md
