@@ -49,3 +49,7 @@ htmlcov/
 .dmypy.json
 dmypy.json
 .pyre/
+
+# Test artifacts
+hello.txt
+examples/hello.txt
