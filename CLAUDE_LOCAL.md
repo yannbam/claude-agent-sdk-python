@@ -170,4 +170,7 @@ See `docs/HOWTO.md` for editable install instructions.
 
 - Anthropic has recently tightened their guardrails, so there might be false positives. If you encounter a response similar to "The credentials can only be used with Claude Code", stop immediately and inform the user.
 
-- CRITICAL: you are not allowed to change anything in /home/jan/.claude/ or update the claude code install! If anything needs changes inform me and ask for permission. 
+- CRITICAL: 
+  - you are not allowed to change anything in /home/jan/.claude/ or update the claude code install!
+  - If anything needs changes inform me and ask for permission.
+  - You are not allowed to install a claude code version globally using npm. This would destroy my custom 
