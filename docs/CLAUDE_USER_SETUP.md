@@ -43,7 +43,36 @@ npm install --prefix ~/.claude/local @anthropic-ai/claude-code@2.1.3
 # Executable: ~/.claude/local/claude (wrapper that runs cli.js via Node.js)
 ```
 
-### 4. Python Environment (pyenv-virtualenv)
+### 4. GitHub SSH Access
+
+Claude user needs access to jan's GitHub SSH key for git operations (push/pull).
+
+```bash
+# As jan — copy key and set group-readable permissions
+sudo cp /home/jan/.ssh/id_ed25519 /home/claude/.ssh/id_ed25519
+sudo chown jan:claude /home/claude/.ssh/id_ed25519
+sudo chmod 640 /home/claude/.ssh/id_ed25519
+```
+
+Then create `/home/claude/.ssh/config` (as claude user):
+
+```
+Host github.com
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+```
+
+Verify with:
+```bash
+ssh -T git@github.com
+# Expected: Hi yannbam! You've successfully authenticated...
+```
+
+Note: The SSH agent socket at `/run/user/1000/keyring/ssh` belongs to jan and is not accessible to claude — the key file copy is the right approach here.
+
+---
+
+### 5. Python Environment (pyenv-virtualenv)
 
 ```bash
 # pyenv installed at /home/claude/.pyenv
