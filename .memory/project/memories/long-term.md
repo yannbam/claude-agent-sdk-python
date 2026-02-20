@@ -25,9 +25,18 @@ _What do we know about the Claude Agent SDK? Architecture, concepts, verified be
 | SDK venv | `claude-agent-sdk-dev` | `claude-agent-sdk-dev` |
 | Prompt color | Green | Purple |
 
-- **SDK**: v0.1.19 editable install
+- **SDK**: v0.1.21 editable install (bundled CLI 2.1.17)
 - **No ANTHROPIC_API_KEY needed** — uses subscription auth
 - **Group permissions**: jan is in claude group, can read/write /home/claude
+- **SSH agent sharing**: claude uses jan's SSH keys via `SSH_AUTH_SOCK=/run/user/1000/keyring/ssh`
+  - Requires ACLs (may need re-applying after reboot):
+    ```
+    setfacl -m u:claude:rx /run/user/1000
+    setfacl -m u:claude:rx /run/user/1000/keyring
+    setfacl -m u:claude:rwx /run/user/1000/keyring/ssh
+    ```
+- **jan's scripts**: `/home/jan/ai/claude/bin` is in claude's PATH
+- **/tmp/claude**: Created via tmpfiles.d with 0777 permissions for cross-user access
 
 ### Project Structure
 - `src/claude_agent_sdk/` — Main package source
@@ -37,6 +46,32 @@ _What do we know about the Claude Agent SDK? Architecture, concepts, verified be
 - `my_examples/` — Our custom examples (empty, ready to fill)
 - `my_e2e_tests/` — Our custom e2e tests (empty, ready to fill)
 - `docs/` — Our documentation
+
+### Session Format & Message Parsing (verified 2026-01-23)
+
+**Key insight:** Claude Code session JSONL files ARE the stream-json protocol persisted to disk.
+
+**`message_parser.parse_message()`** converts raw JSON → typed Python dataclasses:
+- `UserMessage(content, uuid, parent_tool_use_id)`
+- `AssistantMessage(content=[blocks], model, parent_tool_use_id, error)`
+- `SystemMessage(subtype, data)`
+- `ResultMessage(...)`, `StreamEvent(...)`
+
+**Content blocks:** `TextBlock`, `ThinkingBlock`, `ToolUseBlock`, `ToolResultBlock`
+
+**Format differences — Agent SDK vs Anthropic SDK:**
+| | Agent SDK | Anthropic SDK |
+|---|---|---|
+| Base class | `@dataclass` | Pydantic `BaseModel` |
+| `type` discriminator | **Absent** | Present (`type: Literal["text"]`) |
+| TextBlock.citations | No | Yes |
+
+**Conversion support:**
+| Direction | SDK Support |
+|-----------|-------------|
+| Session JSONL → Python types | `parse_message()` ✓ |
+| Python types → API format | None (add `type` field) |
+| API format → Session JSONL | None (add full metadata) |
 
 ### CLI Discovery & Transport (verified 2026-01-10)
 The SDK spawns Claude Code CLI as a subprocess — it doesn't bundle or modify your installation.
@@ -81,3 +116,4 @@ _What have we built? Docs, examples, tests, code contributions._
 - `docs/HOWTO.md` — How to use this SDK fork from other projects (editable install)
 - `docs/SDK_INSIGHTS.md` — Cheat sheet for non-obvious SDK behaviors (append as we learn)
 - `docs/CLAUDE_USER_SETUP.md` — Documentation of the isolated claude user environment
+- `my_examples/parse_session.py` — Minimal script to parse Claude Code session JSONL using SDK's message_parser

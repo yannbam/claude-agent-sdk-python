@@ -1,3 +1,8 @@
 {
-  "outputStyle": "SDK Interactive Exploration Learning Building"
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "project_memory",
+    "scratchpad_memory"
+  ],
+  "outputStyle": "default"
 }
