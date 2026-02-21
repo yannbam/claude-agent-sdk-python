@@ -9,18 +9,22 @@ Completely isolated settings environment:
 - No user settings loaded (setting_sources=None default)
 - autoCompactEnabled: false, autoUpdates: false, installMethod: local
 - CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-- No tools, no system prompt
+- PostToolUse step-through hook: pause after each tool use
 - effort=high + adaptive thinking (ThinkingBlock output shown)
 """
 import json
 import shutil
 from pathlib import Path
+from typing import Any
 
 import anyio
 from claude_agent_sdk import (
     AssistantMessage,
     ClaudeAgentOptions,
     ClaudeSDKClient,
+    HookContext,
+    HookJSONOutput,
+    HookMatcher,
     TextBlock,
     ThinkingBlock,
 )
@@ -71,17 +75,37 @@ def init_isolated_home() -> Path:
     return ISOLATED_HOME
 
 
+GREEN = "\033[32m"
+RESET = "\033[0m"
+
+
+async def post_tool_hook(hook_input: Any, tool_use_id: str | None, ctx: HookContext) -> HookJSONOutput:
+    """Pause after each tool use — step-through debugger."""
+    print(hook_input)
+
+    # Block here until user decides — runs in a thread so event loop stays free
+    choice = await anyio.to_thread.run_sync(
+        lambda: input("▶ [Enter] continue  [b] block: ").strip().lower()
+    )
+
+    if choice == "b":
+        return {"continue_": False, "stopReason": "User blocked this step"}
+    return {"continue_": True}
+
+
 async def main() -> None:
     isolated_home = init_isolated_home()
 
     options = ClaudeAgentOptions(
-        #allowed_tools=[],                 # no tools
-        tools=[ "Bash", "Read", "Write", "Edit"],
+        tools=["Bash", "Read", "Write", "Edit"],
         permission_mode="bypassPermissions",
         model="claude-sonnet-4-6",
         effort="high",
-        thinking={"type": "adaptive"},    # produces ThinkingBlocks,
-        max_turns=1,
+        thinking={"type": "adaptive"},    # produces ThinkingBlocks
+        # No max_turns — PostToolUse hook handles step-through pausing
+        hooks={
+            "PostToolUse": [HookMatcher(hooks=[post_tool_hook])]
+        },
         env={
             "HOME": str(isolated_home),
             "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
@@ -114,9 +138,9 @@ async def main() -> None:
                 if isinstance(msg, AssistantMessage):
                     for block in msg.content:
                         if isinstance(block, ThinkingBlock):
-                            print(f"\n[thinking]\n{block.thinking}\n[/thinking]\n")
+                            print(f"{GREEN}[thinking] {block.thinking}{RESET}")
                         elif isinstance(block, TextBlock):
-                            print(f"Claude: {block.text}")
+                            print(f"{GREEN}{block.text}{RESET}")
             print()
 
     print("Bye!")
