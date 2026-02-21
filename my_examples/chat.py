@@ -46,6 +46,7 @@ def init_isolated_home() -> Path:
         "autoCompactEnabled": False,
         "installMethod": "local",
         "autoUpdates": False,
+        "penguinModeOrgEnabled": True
     }
     if real_claude_json.exists():
         data = json.loads(real_claude_json.read_text())
@@ -74,10 +75,13 @@ async def main() -> None:
     isolated_home = init_isolated_home()
 
     options = ClaudeAgentOptions(
-        allowed_tools=[],                 # no tools
+        #allowed_tools=[],                 # no tools
+        tools=[ "Bash", "Read", "Write", "Edit"],
+        permission_mode="bypassPermissions",
         model="claude-sonnet-4-6",
         effort="high",
-        thinking={"type": "adaptive"},    # produces ThinkingBlocks
+        thinking={"type": "adaptive"},    # produces ThinkingBlocks,
+        max_turns=1,
         env={
             "HOME": str(isolated_home),
             "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
@@ -106,6 +110,7 @@ async def main() -> None:
 
             # Collect response until ResultMessage
             async for msg in client.receive_response():
+                print(msg)
                 if isinstance(msg, AssistantMessage):
                     for block in msg.content:
                         if isinstance(block, ThinkingBlock):
