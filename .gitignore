@@ -50,3 +50,7 @@ htmlcov/
 dmypy.json
 .pyre/
 .claude/worktrees/
+
+# Local scratch files
+/hello.txt
+/examples/hello.txt
