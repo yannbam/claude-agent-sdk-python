@@ -100,8 +100,9 @@ async def main() -> None:
         tools=["Bash", "Read", "Write", "Edit"],
         permission_mode="bypassPermissions",
         model="claude-sonnet-4-6",
-        effort="high",
-        thinking={"type": "adaptive"},    # produces ThinkingBlocks
+        effort="max",
+        thinking={"type": "enable"},
+        betas=["claude-code-20250219,oauth-2025-04-20","prompt-caching-scope-2026-01-05","adaptive-thinking-2026-01-28"],
         # No max_turns — PostToolUse hook handles step-through pausing
         hooks={
             "PostToolUse": [HookMatcher(hooks=[post_tool_hook])]
